@@ -36,11 +36,15 @@ If you have questions concerning this license or the applicable additional terms
 #include <netdb.h>
 #include <sys/param.h>
 #include <sys/ioctl.h>
-#include <sys/uio.h>
 #include <errno.h>
 #include <sys/select.h>
+#include <limits.h>
+
+#ifndef __PSP__
+#include <sys/uio.h>
 #include <net/if.h>
 #include <ifaddrs.h>
+#endif
 
 #include "sys/platform.h"
 #include "framework/Common.h"
@@ -273,6 +277,7 @@ NET_InitNetworking
 */
 void Sys_InitNetworking(void)
 {
+#ifndef __PSP__
 	unsigned int ip, mask;
 	struct ifaddrs *ifap, *ifp;
 
@@ -318,6 +323,7 @@ void Sys_InitNetworking(void)
 		if (num_interfaces >= MAX_INTERFACES)
 			break;
 	}
+#endif
 }
 
 /*
@@ -326,6 +332,9 @@ IPSocket
 ====================
 */
 static int IPSocket( const char *net_interface, int port, netadr_t *bound_to = NULL ) {
+#ifdef __PSP__
+	return 0;
+#else
 	int newsocket;
 	struct sockaddr_in address;
 	int i = 1;
@@ -385,6 +394,7 @@ static int IPSocket( const char *net_interface, int port, netadr_t *bound_to = N
 	}
 
 	return newsocket;
+#endif
 }
 
 /*
@@ -643,7 +653,7 @@ int idTCP::Read(void *data, int size) {
 		return -1;
 	}
 
-#if defined(_GNU_SOURCE)
+#if defined(_GNU_SOURCE) && !defined(__PSP__)
 	// handle EINTR interrupted system call with TEMP_FAILURE_RETRY -  this is probably GNU libc specific
 	if ( ( nbytes = TEMP_FAILURE_RETRY( read( fd, data, size ) ) ) == -1 ) {
 #else
@@ -694,13 +704,15 @@ int	idTCP::Write(void *data, int size) {
 	sigemptyset( &action.sa_mask );
 	action.sa_flags = 0;
 
+#ifndef __PSP__
 	if ( sigaction( SIGPIPE, &action, &bak_action ) != 0 ) {
 		common->Printf( "ERROR: idTCP::Write: failed to set temporary SIGPIPE handler\n" );
 		Close();
 		return -1;
 	}
+#endif
 
-#if defined(_GNU_SOURCE)
+#if defined(_GNU_SOURCE) && !defined(__PSP__)
 	// handle EINTR interrupted system call with TEMP_FAILURE_RETRY -  this is probably GNU libc specific
 	if ( ( nbytes = TEMP_FAILURE_RETRY ( write( fd, data, size ) ) ) == -1 ) {
 #else
@@ -714,11 +726,13 @@ int	idTCP::Write(void *data, int size) {
 		return -1;
 	}
 
+#ifndef __PSP__
 	if ( sigaction( SIGPIPE, &bak_action, NULL ) != 0 ) {
 		common->Printf( "ERROR: idTCP::Write: failed to reset SIGPIPE handler\n" );
 		Close();
 		return -1;
 	}
+#endif
 
 	return nbytes;
 }

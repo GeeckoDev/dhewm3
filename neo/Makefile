@@ -370,9 +370,9 @@ SRC_SYS_BASE = \
 	sys/threads.o \
 	sys/events.o \
 	sys/sys_local.o \
+	sys/posix/posix_net.o \
 	sys/posix/posix_main.o \
 	sys/linux/main.o
-	#sys/posix/posix_net.o
 
 SRC_SYS_CORE = \
 	sys/glimp.o
