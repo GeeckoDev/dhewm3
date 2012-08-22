@@ -371,7 +371,7 @@ OBJS = $(SRC_RENDERER) $(SRC_FRAMEWORK) $(SRC_CM) $(SRC_DMAP) $(SRC_AAS) \
 LIBS = 
 
 CFLAGS = -O2 -G0 -Wall -D__PSP__ $(shell $(PSPBIN)/sdl-config --cflags)
-CXXFLAGS = $(CFLAGS) -fexceptions -fno-rtti
+CXXFLAGS = $(CFLAGS) -fexceptions
 ASFLAGS = $(CFLAGS)
 
 BUILD_PRX = 1
