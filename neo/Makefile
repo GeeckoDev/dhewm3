@@ -371,7 +371,7 @@ OBJS = $(SRC_RENDERER) $(SRC_FRAMEWORK) $(SRC_CM) $(SRC_DMAP) $(SRC_AAS) \
        
 LIBS =
 
-CFLAGS = -O2 -G0 -Wall -D__PSP__ $(shell $(PSPBIN)/sdl-config --cflags) \
+CFLAGS = -O2 -G0 -D__PSP__ $(shell $(PSPBIN)/sdl-config --cflags) \
          -I./game/
 CXXFLAGS = -fexceptions
 ASFLAGS = 
