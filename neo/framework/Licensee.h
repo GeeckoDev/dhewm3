@@ -93,7 +93,7 @@ If you have questions concerning this license or the applicable additional terms
 #define LINUX_DEFAULT_PATH				"/usr/local/games/doom3"
 
 // Playstation Portable info
-#define PSP_DEFAULT_PATH				"./"
+#define PSP_DEFAULT_PATH				"."
 
 // CD Key file info
 // goes into BASE_GAMEDIR whatever the fs_game is set to
