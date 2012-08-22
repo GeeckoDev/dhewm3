@@ -716,7 +716,8 @@ public:
 	ALsizei					openalSourceCount;
 	openalSource_t			openalSources[256];
 
-	LPALGENEFFECTS			alGenEffects;
+#ifndef __PSP__
+	dGENEFFECTS			alGenEffects;
 	LPALDELETEEFFECTS		alDeleteEffects;
 	LPALISEFFECT			alIsEffect;
 	LPALEFFECTI				alEffecti;
@@ -731,6 +732,7 @@ public:
 	LPALDELETEAUXILIARYEFFECTSLOTS	alDeleteAuxiliaryEffectSlots;
 	LPALISAUXILIARYEFFECTSLOT		alIsAuxiliaryEffectSlot;
 	LPALAUXILIARYEFFECTSLOTI		alAuxiliaryEffectSloti;
+#endif
 
 	idEFXFile				EFXDatabase;
 	bool					efxloaded;

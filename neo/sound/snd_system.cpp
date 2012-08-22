@@ -364,6 +364,7 @@ void idSoundSystemLocal::Init() {
 	common->Printf( "OpenAL renderer: %s\n", alGetString(AL_RENDERER));
 	common->Printf( "OpenAL version: %s\n", alGetString(AL_VERSION));
 
+#ifndef __PSP__
 	// try to obtain EFX extensions
 	if (alcIsExtensionPresent(openalDevice, "ALC_EXT_EFX")) {
 		common->Printf( "OpenAL: found EFX extension\n" );
@@ -405,6 +406,7 @@ void idSoundSystemLocal::Init() {
 		alIsAuxiliaryEffectSlot = NULL;
 		alAuxiliaryEffectSloti = NULL;
 	}
+#endif
 
 	ALuint handle;
 	openalSourceCount = 0;
