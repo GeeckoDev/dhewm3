@@ -389,7 +389,7 @@ CFLAGS = -O2 -G0 -D__PSP__ $(shell $(PSPBIN)/sdl-config --cflags) \
 CXXFLAGS = -fexceptions
 ASFLAGS = 
 
-BUILD_PRX = 1
+BUILD_PRX = 0
 EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_TITLE = dhewm3
 #PSP_EBOOT_ICON = icon0.png
