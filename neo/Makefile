@@ -366,16 +366,16 @@ SRC_D3XP = \
 	d3xp/physics/Force_Grab.o
 
 SRC_SYS_BASE = \
-	sys/cpu.cpp \
-	sys/threads.cpp \
-	sys/events.cpp \
-	sys/sys_local.cpp \
-	sys/posix/posix_net.cpp \
-	sys/posix/posix_main.cpp \
-	sys/linux/main.cpp
+	sys/cpu.o \
+	sys/threads.o \
+	sys/events.o \
+	sys/sys_local.o \
+	sys/posix/posix_net.o \
+	sys/posix/posix_main.o \
+	sys/linux/main.o
 
 SRC_SYS_CORE = \
-	sys/glimp.cpp
+	sys/glimp.o
 
 OBJS = $(SRC_RENDERER) $(SRC_FRAMEWORK) $(SRC_CM) $(SRC_DMAP) $(SRC_AAS) \
        $(SRC_ROQ) $(SRC_RENDERBUMP) $(SRC_SND) $(SRC_UI) $(SRC_TOOLS) \
