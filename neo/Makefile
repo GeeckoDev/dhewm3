@@ -370,7 +370,7 @@ OBJS = $(SRC_RENDERER) $(SRC_FRAMEWORK) $(SRC_CM) $(SRC_DMAP) $(SRC_AAS) \
        $(SRC_IDLIB) $(SRC_GAME) \
        #$(SRC_D3XP)
        
-LIBS =
+LIBS = -lSDL -lGL -ljpeg -lvorbisfile -lvorbis -logg -lOpenAL32 -lpspaudio -lpsphprm -lpsprtc -lpspvfpu -lpspirkeyb -lpsppower -lpspgu -lm -lstdc++
 
 CFLAGS = -O2 -G0 -D__PSP__ $(shell $(PSPBIN)/sdl-config --cflags) \
          -I./game/
