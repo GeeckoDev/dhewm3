@@ -68,6 +68,7 @@ idSoundSystem *				soundSystem = NULL;
 idRenderModelManager *		renderModelManager = NULL;
 idUserInterfaceManager *	uiManager = NULL;
 idDeclManager *				declManager = NULL;
+idAASFileManager *			AASFileManager = NULL;
 idCollisionModelManager *	collisionModelManager = NULL;
 idCVar *					idCVar::staticVars = NULL;
 
@@ -75,7 +76,10 @@ idCVar com_forceGenericSIMD( "com_forceGenericSIMD", "0", CVAR_BOOL|CVAR_SYSTEM,
 
 #endif
 
-idAASFileManager *			AASFileManager = NULL;
+#ifdef __PSP__
+extern idAASFileManager *	AASFileManager;
+#endif
+
 idRenderWorld *				gameRenderWorld = NULL;		// all drawing is done to this world
 idSoundWorld *				gameSoundWorld = NULL;		// all audio goes to this world
 
@@ -98,7 +102,6 @@ const char *idGameLocal::sufaceTypeNames[ MAX_SURFACE_TYPES ] = {
 GetGameAPI
 ============
 */
-
 extern "C" ID_GAME_API gameExport_t *GetGameAPI( gameImport_t *import ) {
 	if ( import->version == GAME_API_VERSION ) {
 

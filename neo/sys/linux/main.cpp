@@ -190,6 +190,9 @@ returns in megabytes
 ================
 */
 int Sys_GetSystemRam( void ) {
+#ifdef __PSP__
+	return 64; // slim
+#else
 	long	count, page_size;
 	int		mb;
 
@@ -207,6 +210,7 @@ int Sys_GetSystemRam( void ) {
 	// round to the nearest 16Mb
 	mb = ( mb + 8 ) & ~15;
 	return mb;
+#endif
 }
 
 /*
@@ -219,6 +223,7 @@ if the command contains spaces, system() is used. Otherwise the more straightfor
 ==================
 */
 void Sys_DoStartProcess( const char *exeName, bool dofork ) {
+#ifndef __PSP__
 	bool use_system = false;
 	if ( strchr( exeName, ' ' ) ) {
 		use_system = true;
@@ -269,6 +274,7 @@ void Sys_DoStartProcess( const char *exeName, bool dofork ) {
 		// terminate
 		_exit( 0 );
 	}
+#endif
 }
 
 /*
@@ -323,6 +329,10 @@ void idSysLocal::OpenURL( const char *url, bool quit ) {
 main
 ===============
 */
+#ifdef __PSP__
+#define SDL_main main
+#endif
+
 int main(int argc, char **argv) {
 #ifdef __PSP__
 	callbacks_setup();
