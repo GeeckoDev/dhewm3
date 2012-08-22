@@ -31,15 +31,16 @@ If you have questions concerning this license or the applicable additional terms
 #include <errno.h>
 #include <dirent.h>
 #include <unistd.h>
+#include <sys/time.h>
+#include <pwd.h>
+#include <signal.h>
+#include <fcntl.h>
+
 #ifndef __PSP__
 #include <sys/mman.h>
 #include <dlfcn.h>
-#endif
-#include <sys/time.h>
-#include <pwd.h>
 #include <termios.h>
-#include <signal.h>
-#include <fcntl.h>
+#endif
 
 #include "sys/platform.h"
 #include "idlib/containers/StrList.h"
@@ -67,7 +68,9 @@ idEditField				history_backup;				// the base edit line
 idCVar in_tty( "in_tty", "1", CVAR_BOOL | CVAR_INIT | CVAR_SYSTEM, "terminal tab-completion and history" );
 
 static bool				tty_enabled = false;
+#ifndef __PSP__
 static struct termios	tty_tc;
+#endif
 
 // pid - useful when you attach to gdb..
 idCVar com_pid( "com_pid", "0", CVAR_INTEGER | CVAR_INIT | CVAR_SYSTEM, "process id" );
@@ -83,12 +86,14 @@ Posix_Exit
 ================
 */
 void Posix_Exit(int ret) {
+#ifndef __PSP__
 	if ( tty_enabled ) {
 		Sys_Printf( "shutdown terminal support\n" );
 		if ( tcsetattr( 0, TCSADRAIN, &tty_tc ) == -1 ) {
 			Sys_Printf( "tcsetattr failed: %s\n", strerror( errno ) );
 		}
 	}
+#endif
 
 	// process spawning. it's best when it happens after everything has shut down
 	if ( exit_spawn[0] ) {
@@ -269,7 +274,11 @@ TODO: OSX - use the native API instead? NSModule
 =================
 */
 uintptr_t Sys_DLL_Load( const char *path ) {
+#ifdef __PSP__
+	return 0;
+#else
 	return (uintptr_t)dlopen( path, RTLD_NOW );
+#endif
 }
 
 /*
@@ -278,12 +287,16 @@ Sys_DLL_GetProcAddress
 =================
 */
 void* Sys_DLL_GetProcAddress( uintptr_t handle, const char *sym ) {
+#ifdef __PSP__
+	return NULL;
+#else
 	const char *error;
 	void *ret = dlsym( (void *)handle, sym );
 	if ((error = dlerror()) != NULL)  {
 		Sys_Printf( "dlsym '%s' failed: %s\n", sym, error );
 	}
 	return ret;
+#endif
 }
 
 /*
@@ -292,7 +305,9 @@ Sys_DLL_Unload
 =================
 */
 void Sys_DLL_Unload( uintptr_t handle ) {
+#ifndef __PSP__
 	dlclose( (void *)handle );
+#endif
 }
 
 /*
@@ -363,6 +378,9 @@ Posix_InitConsoleInput
 ===============
 */
 void Posix_InitConsoleInput( void ) {
+#ifdef __PSP__
+	in_tty.SetBool( false );
+#else
 	struct termios tc;
 
 	if ( in_tty.GetBool() ) {
@@ -421,6 +439,7 @@ void Posix_InitConsoleInput( void ) {
 	} else {
 		Sys_Printf( "terminal support disabled\n" );
 	}
+#endif
 }
 
 /*
@@ -726,6 +745,7 @@ char *Sys_ConsoleInput( void ) {
 		// disabled on OSX. works fine from a terminal, but launching from Finder is causing trouble
 		// I'm pretty sure it could be re-enabled if needed, and just handling the Finder failure case right (TTimo)
 #ifndef MACOS_X
+#ifndef __PSP__
 		// no terminal support - read only complete lines
 		int				len;
 		fd_set			fdset;
@@ -756,6 +776,7 @@ char *Sys_ConsoleInput( void ) {
 
 		input_ret[ len-1 ] = '\0';		// rip off the \n and terminate
 		return input_ret;
+#endif
 #endif
 	}
 	return NULL;
