@@ -371,9 +371,10 @@ OBJS = $(SRC_RENDERER) $(SRC_FRAMEWORK) $(SRC_CM) $(SRC_DMAP) $(SRC_AAS) \
        
 LIBS =
 
-CFLAGS = -O2 -G0 -Wall -D__PSP__ $(shell $(PSPBIN)/sdl-config --cflags)
-CXXFLAGS = $(CFLAGS) -fexceptions
-ASFLAGS = $(CFLAGS)
+CFLAGS = -O2 -G0 -Wall -D__PSP__ $(shell $(PSPBIN)/sdl-config --cflags) \
+         -I./game/
+CXXFLAGS = -fexceptions
+ASFLAGS = 
 
 BUILD_PRX = 1
 EXTRA_TARGETS = EBOOT.PBP
