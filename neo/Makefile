@@ -1,3 +1,5 @@
+PSPSDK=$(shell psp-config --pspsdk-path)
+PSPBIN=$(shell psp-config --psp-prefix)/bin
 MEDIA = /media/PANDORA/PSP/GAME/CAT_Homebrews\ perso/
 TARGET = dhewm3
 
@@ -368,7 +370,7 @@ OBJS = $(SRC_RENDERER) $(SRC_FRAMEWORK) $(SRC_CM) $(SRC_DMAP) $(SRC_AAS) \
        
 LIBS = 
 
-CFLAGS = -O2 -G0 -Wall -D__PSP__
+CFLAGS = -O2 -G0 -Wall -D__PSP__ $(shell $(PSPBIN)/sdl-config --cflags)
 CXXFLAGS = $(CFLAGS) -fexceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
@@ -378,7 +380,6 @@ PSP_EBOOT_TITLE = dhewm3
 #PSP_EBOOT_ICON = icon0.png
 PSP_FW_VERSION = 500
 
-PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build.mak 
 install:
 	cp ./EBOOT.PBP $(MEDIA)$(TARGET)
