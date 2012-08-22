@@ -366,9 +366,10 @@ SRC_D3XP = \
 	d3xp/physics/Force_Grab.o
 
 OBJS = $(SRC_RENDERER) $(SRC_FRAMEWORK) $(SRC_CM) $(SRC_DMAP) $(SRC_AAS) \
-       $(SRC_ROQ) $(SRC_RENDERBUMP) $(SRC_SND) $(SRC_UI) $(SRC_TOOLS)
+       $(SRC_ROQ) $(SRC_RENDERBUMP) $(SRC_SND) $(SRC_UI) $(SRC_TOOLS) \
+       $(SRC_IDLIB) $(SRC_GAME) $(SRC_D3XP)
        
-LIBS = 
+LIBS =
 
 CFLAGS = -O2 -G0 -Wall -D__PSP__ $(shell $(PSPBIN)/sdl-config --cflags)
 CXXFLAGS = $(CFLAGS) -fexceptions
