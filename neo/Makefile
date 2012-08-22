@@ -367,7 +367,8 @@ SRC_D3XP = \
 
 OBJS = $(SRC_RENDERER) $(SRC_FRAMEWORK) $(SRC_CM) $(SRC_DMAP) $(SRC_AAS) \
        $(SRC_ROQ) $(SRC_RENDERBUMP) $(SRC_SND) $(SRC_UI) $(SRC_TOOLS) \
-       $(SRC_IDLIB) $(SRC_GAME) $(SRC_D3XP)
+       $(SRC_IDLIB) $(SRC_GAME) \
+       #$(SRC_D3XP)
        
 LIBS =
 
