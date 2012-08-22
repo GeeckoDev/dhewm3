@@ -394,6 +394,7 @@ EXTRA_TARGETS = EBOOT.PBP
 PSP_EBOOT_TITLE = dhewm3
 #PSP_EBOOT_ICON = icon0.png
 PSP_FW_VERSION = 500
+PSP_LARGE_MEMORY = 1
 
 include $(PSPSDK)/lib/build.mak 
 install:
