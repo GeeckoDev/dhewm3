@@ -106,7 +106,7 @@ If you have questions concerning this license or the applicable additional terms
 
 
 // Unix
-#ifdef __unix__
+#if defined(__unix__) || defined(__PSP__)
 
 #define _alloca						alloca
 #define _alloca16( x )				((void *)((((uintptr_t)alloca( (x)+15 )) + 15) & ~15))
