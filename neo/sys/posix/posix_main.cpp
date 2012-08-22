@@ -31,10 +31,12 @@ If you have questions concerning this license or the applicable additional terms
 #include <errno.h>
 #include <dirent.h>
 #include <unistd.h>
+#ifndef __PSP__
 #include <sys/mman.h>
+#include <dlfcn.h>
+#endif
 #include <sys/time.h>
 #include <pwd.h>
-#include <dlfcn.h>
 #include <termios.h>
 #include <signal.h>
 #include <fcntl.h>

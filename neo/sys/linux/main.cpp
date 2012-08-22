@@ -42,6 +42,49 @@ If you have questions concerning this license or the applicable additional terms
 
 #include <locale.h>
 
+#ifdef __PSP__
+extern "C"
+{
+    #include <pspkernel.h>
+
+	PSP_MODULE_INFO("dhewm3", 0, 1, 1);
+	PSP_HEAP_SIZE_KB(-4096);
+	PSP_MAIN_THREAD_ATTR(THREAD_ATTR_USER | THREAD_ATTR_VFPU);
+
+	int callbacks_exit(int, int, void*)
+	{
+		sceKernelExitGame();
+
+		return 0;
+	}
+	  
+	int callbacks_thread(unsigned int, void*)
+	{
+		int id;
+		
+		id = sceKernelCreateCallback("exit_cb", callbacks_exit, NULL);
+		sceKernelRegisterExitCallback(id);
+		sceKernelSleepThreadCB();
+		
+		return 0;
+	}
+	  
+	int callbacks_setup()
+	{
+		int id;
+		
+		id = sceKernelCreateThread("cb", callbacks_thread, 0x11, 0xFA0, 0, NULL);
+		
+		if (id >= 0)
+		{
+		    sceKernelStartThread(id, 0, NULL);
+		}
+		
+		return id;
+	}
+}
+#endif
+
 static char path_argv[MAX_OSPATH];
 
 bool Sys_GetPath(sysPath_t type, idStr &path) {
@@ -55,6 +98,10 @@ bool Sys_GetPath(sysPath_t type, idStr &path) {
 
 	switch(type) {
 	case PATH_BASE:
+#ifdef __PSP__
+		path = PSP_DEFAULT_PATH;
+		return true;
+#else
 		if (stat(BUILD_DATADIR, &st) != -1 && S_ISDIR(st.st_mode)) {
 			path = BUILD_DATADIR;
 			return true;
@@ -71,8 +118,13 @@ bool Sys_GetPath(sysPath_t type, idStr &path) {
 		}
 
 		return false;
+#endif
 
 	case PATH_CONFIG:
+#ifdef __PSP__
+		path = PSP_DEFAULT_PATH;
+		return true;
+#else
 		s = getenv("XDG_CONFIG_HOME");
 		if (s)
 			idStr::snPrintf(buf, sizeof(buf), "%s/dhewm3", s);
@@ -81,8 +133,13 @@ bool Sys_GetPath(sysPath_t type, idStr &path) {
 
 		path = buf;
 		return true;
+#endif
 
 	case PATH_SAVE:
+#ifdef __PSP__
+		path = PSP_DEFAULT_PATH;
+		return true;
+#else
 		s = getenv("XDG_DATA_HOME");
 		if (s)
 			idStr::snPrintf(buf, sizeof(buf), "%s/dhewm3", s);
@@ -91,8 +148,13 @@ bool Sys_GetPath(sysPath_t type, idStr &path) {
 
 		path = buf;
 		return true;
+#endif
 
 	case PATH_EXE:
+#ifdef __PSP__
+		path = PSP_DEFAULT_PATH "/EBOOT.PBP";
+		return true;
+#else
 		idStr::snPrintf(buf, sizeof(buf), "/proc/%d/exe", getpid());
 		len = readlink(buf, buf2, sizeof(buf2));
 		if (len != -1) {
@@ -106,6 +168,7 @@ bool Sys_GetPath(sysPath_t type, idStr &path) {
 		}
 
 		return false;
+#endif
 	}
 
 	return false;
@@ -261,6 +324,10 @@ main
 ===============
 */
 int main(int argc, char **argv) {
+#ifdef __PSP__
+	callbacks_setup();
+	common->Init( 0, NULL );
+#else
 	// fallback path to the binary for systems without /proc
 	// while not 100% reliable, its good enough
 	if (argc > 0) {
@@ -282,6 +349,7 @@ int main(int argc, char **argv) {
 	} else {
 		common->Init( 0, NULL );
 	}
+#endif
 
 	while (1) {
 		common->Frame();
