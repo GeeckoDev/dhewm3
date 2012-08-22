@@ -365,9 +365,21 @@ SRC_D3XP = \
 	d3xp/Grabber.o \
 	d3xp/physics/Force_Grab.o
 
+SRC_SYS_BASE = \
+	sys/cpu.cpp \
+	sys/threads.cpp \
+	sys/events.cpp \
+	sys/sys_local.cpp \
+	sys/posix/posix_net.cpp \
+	sys/posix/posix_main.cpp \
+	sys/linux/main.cpp
+
+SRC_SYS_CORE = \
+	sys/glimp.cpp
+
 OBJS = $(SRC_RENDERER) $(SRC_FRAMEWORK) $(SRC_CM) $(SRC_DMAP) $(SRC_AAS) \
        $(SRC_ROQ) $(SRC_RENDERBUMP) $(SRC_SND) $(SRC_UI) $(SRC_TOOLS) \
-       $(SRC_IDLIB) $(SRC_GAME) \
+       $(SRC_IDLIB) $(SRC_GAME) $(SRC_SYS_BASE) $(SRC_SYS_CORE)
        #$(SRC_D3XP)
        
 LIBS = -lSDL -lGL -ljpeg -lvorbisfile -lvorbis -logg -lOpenAL32 -lpspaudio -lpsphprm -lpsprtc -lpspvfpu -lpspirkeyb -lpsppower -lpspgu -lm -lstdc++
